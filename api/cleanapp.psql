@@ -1,0 +1,619 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- Name: metric_type; Type: TYPE; Schema: public; Owner: other
+--
+
+CREATE TYPE metric_type AS ENUM (
+    'int',
+    'float',
+    'text'
+);
+
+
+ALTER TYPE public.metric_type OWNER TO other;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE categories (
+    category_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    description text
+);
+
+
+ALTER TABLE public.categories OWNER TO other;
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE; Schema: public; Owner: other
+--
+
+CREATE SEQUENCE categories_category_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_category_id_seq OWNER TO other;
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: other
+--
+
+ALTER SEQUENCE categories_category_id_seq OWNED BY categories.category_id;
+
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: other
+--
+
+SELECT pg_catalog.setval('categories_category_id_seq', 1, false);
+
+
+--
+-- Name: companies; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE companies (
+    company_id integer NOT NULL,
+    company_name character varying(80) NOT NULL,
+    web_uri text
+);
+
+
+ALTER TABLE public.companies OWNER TO other;
+
+--
+-- Name: dimensions; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE dimensions (
+    dimension_id integer NOT NULL,
+    product_id integer NOT NULL,
+    description character varying(255),
+    length real,
+    height real,
+    width real,
+    weight real
+);
+
+
+ALTER TABLE public.dimensions OWNER TO other;
+
+--
+-- Name: dimensions_dimension_id_seq; Type: SEQUENCE; Schema: public; Owner: other
+--
+
+CREATE SEQUENCE dimensions_dimension_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dimensions_dimension_id_seq OWNER TO other;
+
+--
+-- Name: dimensions_dimension_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: other
+--
+
+ALTER SEQUENCE dimensions_dimension_id_seq OWNED BY dimensions.dimension_id;
+
+
+--
+-- Name: dimensions_dimension_id_seq; Type: SEQUENCE SET; Schema: public; Owner: other
+--
+
+SELECT pg_catalog.setval('dimensions_dimension_id_seq', 1, false);
+
+
+--
+-- Name: metrics; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE metrics (
+    metric_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    description text,
+    format character varying(255),
+    sort_desc boolean DEFAULT true NOT NULL,
+    type metric_type NOT NULL
+);
+
+
+ALTER TABLE public.metrics OWNER TO other;
+
+--
+-- Name: metrics_metric_id_seq; Type: SEQUENCE; Schema: public; Owner: other
+--
+
+CREATE SEQUENCE metrics_metric_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.metrics_metric_id_seq OWNER TO other;
+
+--
+-- Name: metrics_metric_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: other
+--
+
+ALTER SEQUENCE metrics_metric_id_seq OWNED BY metrics.metric_id;
+
+
+--
+-- Name: metrics_metric_id_seq; Type: SEQUENCE SET; Schema: public; Owner: other
+--
+
+SELECT pg_catalog.setval('metrics_metric_id_seq', 1, false);
+
+
+--
+-- Name: product_information; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE product_information (
+    product_information_id integer NOT NULL,
+    key character varying(255) NOT NULL,
+    value character varying(255)
+);
+
+
+ALTER TABLE public.product_information OWNER TO other;
+
+--
+-- Name: product_information_product_information_id_seq; Type: SEQUENCE; Schema: public; Owner: other
+--
+
+CREATE SEQUENCE product_information_product_information_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_information_product_information_id_seq OWNER TO other;
+
+--
+-- Name: product_information_product_information_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: other
+--
+
+ALTER SEQUENCE product_information_product_information_id_seq OWNED BY product_information.product_information_id;
+
+
+--
+-- Name: product_information_product_information_id_seq; Type: SEQUENCE SET; Schema: public; Owner: other
+--
+
+SELECT pg_catalog.setval('product_information_product_information_id_seq', 1, false);
+
+
+--
+-- Name: product_links; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE product_links (
+    product_link_id integer NOT NULL,
+    description character varying(255),
+    uri text NOT NULL
+);
+
+
+ALTER TABLE public.product_links OWNER TO other;
+
+--
+-- Name: product_links_product_link_id_seq; Type: SEQUENCE; Schema: public; Owner: other
+--
+
+CREATE SEQUENCE product_links_product_link_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_links_product_link_id_seq OWNER TO other;
+
+--
+-- Name: product_links_product_link_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: other
+--
+
+ALTER SEQUENCE product_links_product_link_id_seq OWNED BY product_links.product_link_id;
+
+
+--
+-- Name: product_links_product_link_id_seq; Type: SEQUENCE SET; Schema: public; Owner: other
+--
+
+SELECT pg_catalog.setval('product_links_product_link_id_seq', 1, false);
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE products (
+    product_id integer NOT NULL,
+    product_name character varying(255) NOT NULL,
+    model character varying(255) NOT NULL,
+    company_id integer,
+    product_name_tsv tsvector
+);
+
+
+ALTER TABLE public.products OWNER TO other;
+
+--
+-- Name: products_productid_seq; Type: SEQUENCE; Schema: public; Owner: other
+--
+
+CREATE SEQUENCE products_productid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_productid_seq OWNER TO other;
+
+--
+-- Name: products_productid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: other
+--
+
+ALTER SEQUENCE products_productid_seq OWNED BY products.product_id;
+
+
+--
+-- Name: products_productid_seq; Type: SEQUENCE SET; Schema: public; Owner: other
+--
+
+SELECT pg_catalog.setval('products_productid_seq', 6, true);
+
+
+--
+-- Name: specifications; Type: TABLE; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE TABLE specifications (
+    specification_id integer NOT NULL,
+    product_id integer NOT NULL,
+    metric_id integer NOT NULL,
+    int_value bigint,
+    float_value double precision,
+    text_value text
+);
+
+
+ALTER TABLE public.specifications OWNER TO other;
+
+--
+-- Name: specifications_specification_id_seq; Type: SEQUENCE; Schema: public; Owner: other
+--
+
+CREATE SEQUENCE specifications_specification_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.specifications_specification_id_seq OWNER TO other;
+
+--
+-- Name: specifications_specification_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: other
+--
+
+ALTER SEQUENCE specifications_specification_id_seq OWNED BY specifications.specification_id;
+
+
+--
+-- Name: specifications_specification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: other
+--
+
+SELECT pg_catalog.setval('specifications_specification_id_seq', 1, false);
+
+
+--
+-- Name: category_id; Type: DEFAULT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY categories ALTER COLUMN category_id SET DEFAULT nextval('categories_category_id_seq'::regclass);
+
+
+--
+-- Name: dimension_id; Type: DEFAULT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY dimensions ALTER COLUMN dimension_id SET DEFAULT nextval('dimensions_dimension_id_seq'::regclass);
+
+
+--
+-- Name: metric_id; Type: DEFAULT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY metrics ALTER COLUMN metric_id SET DEFAULT nextval('metrics_metric_id_seq'::regclass);
+
+
+--
+-- Name: product_information_id; Type: DEFAULT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY product_information ALTER COLUMN product_information_id SET DEFAULT nextval('product_information_product_information_id_seq'::regclass);
+
+
+--
+-- Name: product_link_id; Type: DEFAULT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY product_links ALTER COLUMN product_link_id SET DEFAULT nextval('product_links_product_link_id_seq'::regclass);
+
+
+--
+-- Name: product_id; Type: DEFAULT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY products ALTER COLUMN product_id SET DEFAULT nextval('products_productid_seq'::regclass);
+
+
+--
+-- Name: specification_id; Type: DEFAULT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY specifications ALTER COLUMN specification_id SET DEFAULT nextval('specifications_specification_id_seq'::regclass);
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY categories (category_id, name, description) FROM stdin;
+\.
+
+
+--
+-- Data for Name: companies; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY companies (company_id, company_name, web_uri) FROM stdin;
+\.
+
+
+--
+-- Data for Name: dimensions; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY dimensions (dimension_id, product_id, description, length, height, width, weight) FROM stdin;
+\.
+
+
+--
+-- Data for Name: metrics; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY metrics (metric_id, name, description, format, sort_desc, type) FROM stdin;
+\.
+
+
+--
+-- Data for Name: product_information; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY product_information (product_information_id, key, value) FROM stdin;
+\.
+
+
+--
+-- Data for Name: product_links; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY product_links (product_link_id, description, uri) FROM stdin;
+\.
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY products (product_id, product_name, model, company_id, product_name_tsv) FROM stdin;
+3	test a	aidfj5623	\N	'test':1
+4	this is a refrigerator	aidfj5623	\N	'refriger':4
+5	this is another refrigerator	3742876239	\N	'anoth':3 'refriger':4
+6	this is a toaster	3742876239	\N	'toaster':4
+\.
+
+
+--
+-- Data for Name: specifications; Type: TABLE DATA; Schema: public; Owner: other
+--
+
+COPY specifications (specification_id, product_id, metric_id, int_value, float_value, text_value) FROM stdin;
+\.
+
+
+--
+-- Name: categories_name_key; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_name_key UNIQUE (name);
+
+
+--
+-- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (category_id);
+
+
+--
+-- Name: companies_company_name_key; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY companies
+    ADD CONSTRAINT companies_company_name_key UNIQUE (company_name);
+
+
+--
+-- Name: companies_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY companies
+    ADD CONSTRAINT companies_pkey PRIMARY KEY (company_id);
+
+
+--
+-- Name: dimensions_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY dimensions
+    ADD CONSTRAINT dimensions_pkey PRIMARY KEY (dimension_id);
+
+
+--
+-- Name: metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY metrics
+    ADD CONSTRAINT metrics_pkey PRIMARY KEY (metric_id);
+
+
+--
+-- Name: product_information_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY product_information
+    ADD CONSTRAINT product_information_pkey PRIMARY KEY (product_information_id);
+
+
+--
+-- Name: product_links_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY product_links
+    ADD CONSTRAINT product_links_pkey PRIMARY KEY (product_link_id);
+
+
+--
+-- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (product_id);
+
+
+--
+-- Name: specifications_pkey; Type: CONSTRAINT; Schema: public; Owner: other; Tablespace: 
+--
+
+ALTER TABLE ONLY specifications
+    ADD CONSTRAINT specifications_pkey PRIMARY KEY (specification_id);
+
+
+--
+-- Name: product_information_key_idx; Type: INDEX; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE INDEX product_information_key_idx ON product_information USING btree (key);
+
+
+--
+-- Name: products_model_idx; Type: INDEX; Schema: public; Owner: other; Tablespace: 
+--
+
+CREATE INDEX products_model_idx ON products USING btree (model);
+
+
+--
+-- Name: product_name_tsv_update; Type: TRIGGER; Schema: public; Owner: other
+--
+
+CREATE TRIGGER product_name_tsv_update BEFORE INSERT OR UPDATE ON products FOR EACH ROW EXECUTE PROCEDURE tsvector_update_trigger('product_name_tsv', 'pg_catalog.english', 'product_name');
+
+
+--
+-- Name: dimensions_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY dimensions
+    ADD CONSTRAINT dimensions_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(product_id);
+
+
+--
+-- Name: products_company_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT products_company_id_fkey FOREIGN KEY (company_id) REFERENCES companies(company_id);
+
+
+--
+-- Name: specifications_metric_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY specifications
+    ADD CONSTRAINT specifications_metric_id_fkey FOREIGN KEY (metric_id) REFERENCES metrics(metric_id);
+
+
+--
+-- Name: specifications_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: other
+--
+
+ALTER TABLE ONLY specifications
+    ADD CONSTRAINT specifications_product_id_fkey FOREIGN KEY (product_id) REFERENCES products(product_id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

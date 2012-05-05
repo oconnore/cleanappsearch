@@ -1,0 +1,10 @@
+{
+   "database-name": "appsearch",
+   "database-user": "luser",
+   "database-password": "can't touch this",
+   "database-host": "localhost",
+   "access": "cleanappsearch/api/log/access.txt",
+   "error": "cleanappsearch/api/log/error.txt",
+   "listen-host": "locahost",
+   "listen-port": 80
+}
