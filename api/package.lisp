@@ -9,5 +9,8 @@
 	hunchentoot
 	json
 	postmodern
-	cl-ppcre))
+	cl-ppcre
+	parse-number
+	split-sequence
+	flexi-streams))
   

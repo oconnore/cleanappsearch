@@ -67,30 +67,40 @@
 ;;; ------------------------------------------------------------------
 ;;; API endpoints
 
+;;; ------------------------------------------------------------------
+;;; API endpoints
+
+
 (define-easy-handler (cleanapp-search :uri "/api/search")
     ((query :request-type :both)
      (filter :request-type :both
 	     :parameter-type '(list string)))
   (setf (content-type*) "application/json")
   (let ((success t)
-	(columns (list "Company"
-		       "Name"
+	(columns (list "Type"
+		       "Style"
+		       "Company"
 		       "Model"
-		       "Manufacturer"
-		       "kW/Year"))
+		       "Height"
+		       "Width"
+		       "Depth"
+		       "Volume "
+		       "kWh/Year"
+		       "kWh/Year/ft^3"))
 	(products
-	 '((43
-	    ("Mitsubishi"
-	     "Refrigerator A"
-	     "ICICBB-1776"
-	     2006
-	     293.34))
-	   (44
-	    ("Samsung"
-	     "Refrigerator B"
-	     "KEWLR-9000"
-	     2003
-	     983.54))))
+	 '((45
+	    (
+	     "Refrigerator"
+	     "Top Freezer"
+	     "Frigidaire"
+
+	     "LFTR1814L"
+	     64
+	     30
+	     31
+	     18.2
+	     479
+	     26))))
 	(*json-output* (make-string-output-stream)))
     (with-object ()
       (encode-object-member :response success)
