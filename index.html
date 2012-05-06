@@ -27,11 +27,19 @@
          <h3>We make energy audits work</h3>
       </span>
    </div>
-   <div id="body">
-      <form id="searchbox">
-         <input type="text" class="textbox" name="" value="Search by model # or product name!" />
-         <input type="submit" class="submitbutton" name="search" value="Search!" />
+   <div id="search">
+      <form id="searchbox" action="">
+	<div id="sbw1">
+	  <div id="sbw2">
+            <input type="text" id="searchtextbox" name="" value="" />
+	  </div>
+	</div>
+        <input type="submit" class="submitbutton" value="Search by model # or product name!" />
+	<input type="button" class="submitbutton" id="advancedsearch" value="+Advanced" />
       </form>
+      <div id="notice"></div>
+   </div>
+   <div id="results">
    </div>
 </div>
 

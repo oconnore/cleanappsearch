@@ -88,12 +88,19 @@ td { vertical-align: top; }
    padding: 0;
 }
 
+#header{
+    width: 100%;
+    max-width: 744px;
+    margin: 0 auto;
+}
 h1,h2,h3{
    font: 100 normal 30px/30px sans-serif;
 }
 #header h1{
    font-size: 1.6em;
+   font-weight: 500;
 }
+
 .tagline{
    
 }
@@ -110,25 +117,68 @@ h1,h2,h3{
    font-size: 1em;
 
 }
-#searchbox{
-   
+#search{
+    width: 100%;
+    max-width: 744px;
+    margin: 0 auto;
 }
-#searchbox .textbox, #searchbox .submitbutton{
+#searchbox {
+   display: block;
+   width: auto;
+}
+#searchbox #searchtextbox, #searchbox .submitbutton{
    font: 100 normal 14px/14px sans-serif;
-   color: #999;
+   color: #555;
    padding: 4px;
    border-radius: 3px;
    border: 1px solid #ccc;
-   margin: 5px;
    background: #fff;
+   margin: 5px;
 }
-#searchbox .textbox{
-   width: 100%;
+#sbw1{
+    display: block;
+    margin: 5px;
+    padding: 3px;
+    border-radius: 3px;
+    border: 1px solid #999;
+    background: #fff;
+}
+#sbw2{
+    display: block;
+    margin: 3px;
+}
+#searchbox #searchtextbox{
+   margin: 0;
+   display: block;
+   border: 0;
 }
 #searchbox .submitbutton{
    background: #eee;
    color: #333;
 }
+#searchbox .submitbutton:hover{
+   background: #f0f6ff;
+   color: #333;
+}
+#searchbox .submitbutton:active{
+   background: #ccc;
+   color: #000;
+}
+#results{
+    display: none;
+}
+#results table th{
+    text-align: center;
+    padding: 3px 7px;
+}
+#results table td{
+    padding: 3px;
+    border: 1px solid #555;
+}
+#hidden{
+    display: none;
+}
+
 
 
 

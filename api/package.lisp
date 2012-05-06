@@ -8,5 +8,6 @@
   (:use common-lisp
 	hunchentoot
 	json
-	postmodern))
+	postmodern
+	cl-ppcre))
   

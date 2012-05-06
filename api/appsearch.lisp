@@ -46,8 +46,10 @@
 
 (defun start-server (&optional (config *global-config*))
   (when *acceptor*
-    (stop *acceptor*))
-  (let ((acceptor (make-instance 'acceptor
+    (handler-case
+	(stop *acceptor*)
+      (t () nil)))
+  (let ((acceptor (make-instance 'easy-acceptor
 				 :address
 				 (slot-value config :listen-host)
 				 :port
@@ -63,8 +65,63 @@
   (stop acc))
 
 ;;; ------------------------------------------------------------------
+;;; API endpoints
 
-;;(define-easy-handler (
+(define-easy-handler (cleanapp-search :uri "/api/search")
+    ((query :request-type :both)
+     (filter :request-type :both
+	     :parameter-type '(list string)))
+  (setf (content-type*) "application/json")
+  (let ((success t)
+	(columns (list "Company"
+		       "Name"
+		       "Model"
+		       "Manufacturer"
+		       "kW/Year"))
+	(products
+	 '((43
+	    ("Mitsubishi"
+	     "Refrigerator A"
+	     "ICICBB-1776"
+	     2006
+	     293.34))
+	   (44
+	    ("Samsung"
+	     "Refrigerator B"
+	     "KEWLR-9000"
+	     2003
+	     983.54))))
+	(*json-output* (make-string-output-stream)))
+    (with-object ()
+      (encode-object-member :response success)
+      (as-object-member (:columns)
+	(with-array ()
+	  (mapc #'encode-array-member columns)))
+      (as-object-member (:products)
+	(with-array ()
+	  (loop for (id cells) in products
+	     do
+	       (as-array-member ()
+		 (with-object ()
+		   (encode-object-member :id id)
+		   (as-object-member (:cells)
+		     (with-array ()
+		       (loop for cell in cells
+			  do
+			    (encode-array-member cell))))))))))
+    (get-output-stream-string *json-output*)))
+
+;;; ------------------------------------------------------------------
+
+(define-easy-handler (cleanapp-product :uri "/api/product")
+    ((id :request-type :both :parameter-type 'integer))
+  (setf (content-type*) "application/json")
+  (encode-json-alist-to-string
+   `((:product-id . ,id))))
+
+;;; ------------------------------------------------------------------
+
+
 
 ;;; ==================================================================
 ;;; End of file
